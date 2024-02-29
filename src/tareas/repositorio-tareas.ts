@@ -5,16 +5,23 @@ import { retry, throwError } from 'rxjs'
 
 @Injectable()
 export class RepositorioTarea {
+  private correlativoID = 0
   //variable de memoria
-  private tareas: Tarea[] = []
+  private tareas: Tarea[] = [
+    {
+      _id: ++this.correlativoID,
+      nombre: "Primera Tarea 🦀",
+      estado: "pendiente"
+    }
+  ]
 
   //crear tarea
-  public async createTask(datosTareas: Pick<Tarea, "nombre" | "descripcion">): Promise<Tarea> {
+  public async createTask(datosTareas: Pick<Tarea, "nombre" | "descripcion" | "estado">): Promise<Tarea> {
     const tarea: Tarea = {
-      _id: this.tareas.length + 1,
+      _id: ++this.correlativoID,
       nombre: datosTareas.nombre,
       descripcion: datosTareas.descripcion,
-      estado: 'pendiente'
+      estado: datosTareas.estado,
     }
     //lo guarda en la variable de memoria
     this.tareas.push(tarea)
@@ -22,33 +29,35 @@ export class RepositorioTarea {
     return tarea
   }
 
-
   //obtener tarea segun ID
-  public async getTask(id: number): Promise<Tarea[]> {
+  public async getTask(id: number): Promise<Tarea> {
+    //obtener tarea
+    const tarea: Tarea = this.tareas.find((tarea) => id == tarea._id)
     //validacion que no esten fuera del rango
-    if (id < 0 || id >= this.tareas.length)
+    if (!tarea)
       throw new NotFoundException("No se encuentra la tarea con ese ID 🎃")
 
 
-    const tarea: Tarea = this.tareas[id]
+    return tarea
+  }
 
-    return this.tareas
-  }
+
   //obtener todas las task
-  public async getAllTask(id: number): Promise<Tarea[]> {
+  public async getAllTask(): Promise<Tarea[]> {
     return this.tareas
   }
-  //update task with ID
-  public async updateTask(id: number, propsUpdate: Omit<Tarea, 'id'>): Promise<Tarea[]> {
+  //update task with ID y su subset de props
+  public async updateTask(id: number, propsUpdate: Partial<Omit<Tarea, 'id'>>): Promise<Tarea> {
     //buscar la tarea
     const indiceTarea = this.tareas.findIndex((tarea) => id == tarea._id)
-    if (!indiceTarea) { 
-      throw new NotFoundException("No se encuentra una tarea con ese ID 😣") 
+    if (indiceTarea === -1) {
+      throw new NotFoundException("No se encuentra una tarea con ese ID 😣")
     }
 
+
     this.tareas[indiceTarea] = Object.assign(this.tareas[indiceTarea], propsUpdate)
-    
-    return [this.tareas[indiceTarea]]
+
+    return this.tareas[indiceTarea]
   }
 
   //delete task wit ID
@@ -60,4 +69,6 @@ export class RepositorioTarea {
 
     return objTarea
   }
+
+
 }
