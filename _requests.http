@@ -1,0 +1,56 @@
+@Host=http://localhost:3000
+
+GET {{Host}}/
+
+
+###
+# obtener todas las tareas
+GET {{Host}}/tareas/
+
+###
+# crear tarea
+POST {{Host}}/tareas/
+Content-Type: application/json
+
+{
+    "nombre": "Comer 🍚"
+}
+
+
+#/*
+#,
+#{
+#    "nombre": "Ejercitarme 💪"
+#},
+#{
+#    "nombre": "Ir a clases 😣"
+#}
+#*/
+
+
+
+###
+# obtener tarea x id
+GET {{Host}}/tareas/4
+
+###
+# delete x id
+DELETE {{Host}}/tareas/2
+
+###
+# editar tarea x id
+PATCH  {{Host}}/tareas/patch/edit/4
+Content-Type: application/json
+
+{
+    
+    "nombre": "Celebrar 🎆🎈"
+}
+
+###
+# editar tarea status completado
+PUT {{Host}}/tareas/5/completado
+
+###
+# editar tarea status no completado
+PUT {{Host}}/tareas/5/no-completado
