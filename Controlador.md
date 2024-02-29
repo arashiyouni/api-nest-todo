@@ -10,6 +10,7 @@ Controlador
 middle *(se pdoria deriv ar) != service
 
 serivce: 
+-impone la logica del controlador
 aplica el grado del negocio
 las acciones las deriva a otros componentes
 - inptus del controlador, el service tiene que valerce para tratar la info
@@ -20,6 +21,7 @@ las acciones las deriva a otros componentes
 -los actions derivan de otros componentes
 
 -middle es un serive que se ocupa antes del service
+-son datos puros
 
 Guards
 -reglas de cuando ejecutarse
@@ -31,3 +33,12 @@ repository
 - interacciones como: edit, etc 
 - interactua en la db
 - exporta funviones estandar
+
+definicion de tarea:
+{
+
+    nombre> string
+    descricpcion
+}
+
+en los params, el nombre que se tiene que poner tambien debe se rigual en el param( /decorador)
